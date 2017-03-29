@@ -1,1 +1,1346 @@
 
+Phase- 2 - SQL queries
+(Restaurant Database)
+
+
+One-Member Team information: 
+
+Name: Vaishnavi Suguru
+NUID: 77338194
+Email ID: vsuguru@unomaha.edu
+     
+SQL QUERIES: 
+
+1)	Create a “Database”:
+       Create database DBMS project;
+2)	Create “Tables”:
+
+
+Table 1:   Restaurant 
+CREATE TABLE restaurant
+(
+R_ID int not null unique,
+R_type varchar(255),
+R_name varchar(255) not null,
+R_rating int,
+theme varchar(255),
+feedback varchar(225),
+R_city varchar(255),
+primary key (R_ID));
+
+       
+
+Table 2:  Customer
+
+CREATE TABLE customer
+(
+C_ID int unique not null,
+C_type varchar(255),
+mood varchar(255),
+C_name varchar(225) not null,
+C_City varchar(255) default 'omaha',
+P_ID int not null,
+R_ID int not null,
+primary key (C_ID),
+foreign key (R_ID) references restaurant (R_ID),
+foreign key (P_ID) references payment (P_ID)
+);
+
+
+Table 3:      PAYMENT
+CREATE TABLE payment
+(
+P_ID int not null,
+C_ID int,
+primary key (P_ID),
+foreign key (C_ID) references restaurant (C_ID)
+
+);
+                   
+using “ ALTER “ keyword
+
+alter table payment 
+add P_type varchar(255);   
+
+
+
+Table 4:      Food Item 
+CREATE TABLE fooditems
+(
+CU_ID int,
+f_name varchar(255),
+calories int,
+quantity int,
+price int,
+chef_ID int,
+servings int check (servings>0),
+primary key (CU_ID,F_name),
+foreign key (chef_ID) references chef (chef_ID)
+);
+
+
+
+Table 5:      Cuisines
+CREATE TABLE cuisines
+(
+CU_ID int not null,
+CU_type varchar(255),
+country varchar(255),
+ingrediant varchar(225),
+primary key (CU_ID)
+);
+
+
+
+Table 6:      Chef
+CREATE TABLE chef
+(
+chef_ID int not null,
+chef_name varchar(255),
+chef_age int,
+experience int,
+R_ID int,
+primary key (chef_ID),
+foreign key (R_ID) references restaurant(R_ID)
+);
+
+
+
+Table 7:      Part_Time_Chef
+CREATE TABLE part_time_chef
+(
+chef_ID int,
+chef_name varchar(255),
+hourly_salary int,
+primary key (chef_ID)
+);
+
+
+
+Table 8:      Full_Time_Chef
+
+CREATE TABLE full_time_chef
+(
+chef_ID int,
+chef_name varchar(255),
+monthly_salary int,
+primary key (chef_ID)
+);
+
+
+
+Table 9:      Phone
+
+CREATE TABLE phone
+(
+phone_ID int,
+phone_number varchar(255),
+C_ID int,
+primary key (phone_ID),
+foreign key (C_ID) references customer (C_ID)
+);
+
+
+
+Table 10:      Dines
+
+CREATE TABLE dines
+(
+R_ID int,
+C_ID int,
+    dine_id int,
+primary key (dine_ID),
+foreign key (C_ID) references customer (C_ID),
+foreign key (R_ID) references restaurant (R_ID)
+);
+
+
+
+Table 11:      foodstyle
+CREATE TABLE foodstyle
+(
+R_ID int,
+CU_ID int,
+    food_ID int,
+primary key (food_ID),
+foreign key (CU_ID) references cuisines (CU_ID),
+foreign key (R_ID) references restaurant (R_ID)
+);
+
+
+
+  INSERTION OF VALUES IN TABLES
+
+Table 1:   Restaurant 
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (01,'foodtruck','skybar','omaha',3,'village','average');
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (02,'cafe','paradise','hyderabad',3,'hollywood','good');
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (03,'cafe','chitpole','chicago',4,'cave','very good');
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (04,'fastfood','fishland','kochi',1,'cave','poor’);
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (05,'foodtruck','maharaja','omaha',3,'library','average');
+
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (06,'foodtruck','bahar','omaha',3,'disneyland','average’);
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (07,'cafe','navy pier','omaha',5,'village','excellent');
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (08,'foodtruck','mohini','varanasi',4,'village','very good');
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (09,'foodtruck','mefil','omaha',5,'library','excellent');
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (10,'fastfood','kamat','pune',3,'cave','average',31);
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (11,'foodtruck','mcd','newyork',4,'hollywood','excellent');
+
+INSERT INTO restaurant (R_ID, R_type, R_name, R_city, R_rating, theme, feedback)
+VALUES (12,'foodtruck','kfc','mumbai',2,'village','poor');
+
+ 
+
+SELECT * FROM `restaurant`
+
+
+R_ID	R_type	    R_name	R_rating	theme	     feedback	    R_city	
+1	foodtruck   skybar	3	        village	      average	    omaha	
+2	cafe	    paradise	3	        hollywood	good	   hyderabad	
+3	cafe	    chitpole	4	        cave	      very good	    chicago	
+4	fastfood    fishland	1	        cave	        poor	    kochi	
+5	foodtruck   maharaja	3	        library	        average	     omaha	
+6	foodtruck   bahar	3	        disneyland	average	      omaha	
+7	cafe	    navy pier	5	        village	        excellent       omaha	
+8	foodtruck   mohini	4	         village	very good	varanasi	
+9	foodtruck   mefil	5	         library	excellent	omaha	
+10	fastfood    kamat	3	          cave	         average	pune	
+11	foodtruck    mcd	4	         hollywood	excellent	newyork	
+12	foodtruck    kfc	2	          village	poor	         mumbai	
+
+
+Table 2:  Customer
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (561,'habitual','angry','john','omaha', 1, 01);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (562,'customizer','sad','sean','hyderabad', 2, 01);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (563,'affluent','stressed','ron','chicago', 3, 12);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (564,'habitual','tired','ronnie','chicago', 4, 10);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (565,'busy balancers','happy','ronnie','maryland', 5, 12);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (566,'health enthusiast', 'heartbroken','benji','arlington', 5, 01);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (567,'habitual','angry','john','pune', 5, 02);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (568,'customizer','joyfull','rahul','hyderabad', 4, 04);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (569,'affluent','stressed','jack','pune', 3, 05);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (570,'habitual','happy','rajesh','maryland', 3, 02);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (571,'busy balancers','stressed', 'mary','pune', 5, 07);
+
+INSERT INTO customer (C_ID, C_type, mood, C_name, C_city, P_ID, R_ID)
+VALUES (572,'health enthusiast','heartbroken','ram','arlington', 1, 01);
+
+ 
+
+
+    
+
+
+ Showing rows 0 - 11 (12 total, Query took 0.0004 seconds.)
+
+SELECT * FROM `customer`
+
+
+C_ID	C_type	             mood	   C_name	C_City	     P_ID	R_ID	
+561	habitual	     angry	     john	omaha	        1	1	
+562	customizer	     sad	     sean	hyderabad	2	1	
+563	affluent	     stressed        ron	chicago	        3	12	
+564	habitual	     tired	     ronnie	chicago	        4	10	
+565	busy balancers	     happy	      ronnie	maryland	5	12	
+566	health enthusiast    heartbroken      benji	arlington	5	1	
+567	habitual	     angry	       john	pune	        5	2	
+568	customizer	     joyfull	        rahul	hyderabad	4	4	
+569	affluent	     stressed	        jack	pune	        3	5	
+570	habitual	     happy	        rajesh	maryland	3	2	
+571	busy balancers	     stressed	        mary	pune	        5	7	
+572	health enthusiast    heartbroken	ram	arlington	1	1	
+
+
+
+Table 3:      PAYMENT
+INSERT INTO payment (P_ID, P_type)
+VALUES (1,'credit');
+
+INSERT INTO payment (P_ID, P_type)
+VALUES (2,'debit');
+
+INSERT INTO payment (P_ID, P_type)
+VALUES (3,'cash');
+	INSERT INTO payment (P_ID, P_type)
+VALUES (4,'paypal');
+
+INSERT INTO payment (P_ID, P_type)
+VALUES (5,'cheque');
+
+
+
+
+C_ID	C_type	                mood	     C_name	  C_City       P_ID   R_ID	
+561	habitual	        angry	    john	omaha	        1	1	
+562	customizer	        sad	    sean	hyderabad	2	1	
+563	affluent	        stressed    ron	         chicago	3	12	
+564	habitual	        tired	    ronnie	chicago	        4	10	
+565	busy balancers	        happy	    ronnie	maryland	5	12	
+566	health enthusiast	heartbroken  benji	arlington	5	1	
+567	habitual	        angry	     john	pune	        5	2	
+568	customizer	        joyfull	     rahul	hyderabad	4	4	
+569	affluent	        stressed     jack	pune	        3	5	
+570	habitual	        happy	      rajesh	maryland	3	2	
+571	busy balancers	        stressed	mary	pune	        5	7	
+572	health enthusiast	heartbroken	ram	arlington	1	1	
+ 
+
+
+Table 4:      Food Item
+INSERT INTO fooditems (CU_ID, f_name, calories, quantity,price,chef_ID,servings)
+VALUES (22,'butterchicken',300,200,50,81,4);
+
+INSERT INTO fooditems (CU_ID, f_name, calories, quantity,price,chef_ID,servings)
+VALUES (22,'naan',100,90,10,82,1);
+
+INSERT INTO fooditems (CU_ID, f_name, calories, quantity,price,chef_ID,servings)
+VALUES (21,'noodles',400,20,50,81,2);
+
+INSERT INTO fooditems (CU_ID, f_name, calories, quantity,price,chef_ID,servings)
+VALUES (24,'bakedpotato',500,200,50,84,3);
+
+INSERT INTO fooditems (CU_ID, f_name, calories, quantity,price,chef_ID,servings)
+VALUES (23,'pizza',1000,200,50,86,6);
+
+INSERT INTO fooditems (CU_ID, f_name, calories, quantity,price,chef_ID,servings)
+VALUES (26,'biryani',1000,22,50,89,8);
+
+INSERT INTO fooditems (CU_ID, f_name, calories, quantity,price,chef_ID,servings)
+VALUES (25,'samosa',1000,200,50,86,1);
+
+INSERT INTO fooditems (CU_ID, f_name, calories, quantity,price,chef_ID,servings)
+VALUES (23,'garlicbread',100,200,7,90,2);
+
+INSERT INTO fooditems (CU_ID, f_name, calories, quantity,price,chef_ID,servings)
+VALUES (22,'sambar',80,700,50,85,10);
+
+ 
+
+
+
+CU_ID	f_name	       calories	quantity	price	chef_ID	servings	
+22	butterchicken	300	200	        50	81	4	
+21	noodles	         400	20	        50	81	2	
+24	bakedpotato	500	200	        50	84	3	
+23	pizza	        1000	200	        50	86	6	
+26	biryani	        1000	22	        50	89	8	
+25	samosa	        1000	200	        50	86	1	
+23	garlicbread	100	200	        7	90	2	
+22	naan	        100	90	        10	82	1	
+
+
+
+
+Table 5:      Cuisines
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (21,'chinese','china','fish');
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (22,'indian','india','panner');
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (23,'italian','italy','cheese');
+ 
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (24,'american','america','potato');
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (25,'pakistani','pakistan','chicken');
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (26,'afgan','afganistan','chicken');
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (27,'japanese','japan','fish');
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (28,'korean','south korea','fish');
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (29,'srilankan','srilanka','dal');
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (30,'nepali','nepal','dal');
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (31,'bangladeshi','bangladesh','beef');
+
+INSERT INTO cuisines (CU_ID, CU_type, country, ingrediant)
+VALUES (32,'bhutani','bhutan','beef');
+
+ 
+
+
+
+CU_ID	CU_type	        country	    ingrediant	
+21	chinese	        china	       fish	
+22	indian	        india	        panner	
+23	italian 	italy	        cheese	
+24	american	america	         potato	
+25	pakistani	pakistan	chicken	
+26	afgan	        afganistan	chicken	
+27	japanese	japan	         fish	
+28	korean	        south korea	fish	
+29	srilankan	srilanka	dal	
+30	nepali	         nepal	        dal	
+31	bangladeshi	bangladesh	beef	
+32	bhutani	         bhutan	         beef	
+
+
+
+Table 6:      Chef
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience, R_ID)
+VALUES (81,'stan',20, 1,01);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience, R_ID)
+VALUES (82,'villy',45, 5,02);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience, R_ID)
+VALUES (83,'hendry',56, 10,03);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience, R_ID)
+VALUES (84,'tom',30, 4,04);
+
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience, R_ID)
+VALUES (85,'sunny',66, 20,05);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience, R_ID)
+VALUES (86,'bunny',25, 2,06);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience, R_ID)
+VALUES (87,'raj',47, 10,07);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience, R_ID)
+VALUES (88,'kishen',60, 25,08);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience, R_ID)
+VALUES (89,'joy',56, 10,09);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience, R_ID)
+VALUES (90,'happy',66, 20,10);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience,R_ID)
+VALUES (91,'raj',25, 2,11);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience)
+VALUES (92,'raj',47, 10,12);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience)
+VALUES (93,'yash',60, 25,11);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience)
+VALUES (94,'ketan',56, 10,01);
+
+INSERT INTO chef (Chef_ID, chef_name, chef_age, experience)
+VALUES (95,'juno',56, 10,01);
+
+ 
+
+
+chef_ID	chef_name	chef_age	experience	R_ID	
+91	raj	          25	                2	11	
+90	happy	          66	               20	10	
+89	joy	          56	               10	9	
+88	kishen	          60	               25	8	
+87	raj	          47	               10	7	
+86	bunny	          25	                2	6	
+85	sunny	          66	                20	5	
+84	tom	          30	                4	4	
+83	hendry	          56	                10	3	
+82	villy	          45	                5	2	
+81	stan	          20	                1	1	
+92	raj	          47	               10	12	
+93	yash	          60	               25	11	
+94	ketan	          56	               10	1	
+95	juno	          56	                10	1	
+
+
+
+Table 7:      Full_Time_Chef
+
+INSERT INTO full_time_chef (Chef_ID, chef_name, monthly_salary)
+VALUES (81,'stan',5000);
+
+INSERT INTO full_time_chef (Chef_ID, chef_name, monthly_salary)
+VALUES (82,'villy',8000);
+
+INSERT INTO full_time_chef (Chef_ID, chef_name, monthly_salary)
+VALUES (85,'sunny',9004);
+
+INSERT INTO full_time_chef (Chef_ID, chef_name, monthly_salary)
+VALUES (86,'bunny',2006);
+
+INSERT INTO full_time_chef (Chef_ID, chef_name, monthly_salary)
+VALUES (93,'yash',15010);
+
+INSERT INTO full_time_chef (Chef_ID, chef_name, monthly_salary)
+VALUES (94,'ketan',10011);
+ 
+
+
+
+chef_ID	chef_name	monthly_salary	
+81	stan	           5000	
+82	villy	           8000	
+85	sunny	           9004	
+86	bunny	           2006	
+93	yash	           15010	
+94	ketan	           10011	
+
+
+
+Table 8:      Part_Time_Chef
+
+INSERT INTO part_time_chef (Chef_ID, chef_name,hourly_salary)
+VALUES (83,'hendry', 10002);
+
+INSERT INTO part_time_chef (Chef_ID, chef_name, hourly_salary)
+VALUES (84,'tom',4000);
+
+INSERT INTO part_time_chef (Chef_ID, chef_name, hourly_salary)
+VALUES (87,'raj',7112);
+
+INSERT INTO part_time_chef (Chef_ID, chef_name, hourly_salary)
+VALUES (88,'kishen',25001);
+
+INSERT INTO part_time_chef (Chef_ID, chef_name, hourly_salary)
+VALUES (89,'joy',20005);
+
+INSERT INTO part_time_chef (Chef_ID, chef_name, hourly_salary)
+VALUES (90,'happy', 70007);
+
+INSERT INTO part_time_chef (Chef_ID, chef_name, hourly_salary)
+VALUES (91,'raj', 2000);
+
+INSERT INTO part_time_chef (Chef_ID, chef_name, hourly_salary)
+VALUES (92,'raj', 8009);
+
+INSERT INTO part_time_chef (Chef_ID, chef_name, hourly_salary)
+VALUES (95,'juno',9011);
+ 
+
+
+
+chef_ID	chef_name	hourly_salary	
+92	raj	          8009	
+91	raj	          2000	
+90	happy	         70007	
+89	joy	          20005	
+88	kishen	          25001	
+87	raj	          7112	
+84	tom	           4000	
+83	hendry	          10002	
+95	juno	          9011	
+
+
+
+Table 9:      Phone
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (111,974756447, 561);
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (222,958354787, 572);
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (333,929643893, 561);
+
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (444,612946739, 561);
+
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (555,4067636748, 566);
+
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (666,4067644748, 570);
+
+
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (777,788656748, 565);
+
+
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (888,890557748, 568);
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (999,774756447, 568);
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (121,858354787, 569);
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (122,229643893, 564);
+
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (133,112946739, 563);
+
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (144,4067536748, 561);
+
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (155,9067644748, 569);
+
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (166,788016748, 565);
+
+
+INSERT INTO phone(phone_ID, phone_number,C_ID)
+VALUES (177,866557748, 571);
+
+ 
+
+
+phone_ID  phone_number	C_ID	
+111	974756447	561	
+222	958354787	572	
+333	929643893	561	
+444	612946739	561	
+555	4067636748	566	
+666	4067644748	570	
+777	788656748	565	
+888	890557748	568	
+999	774756447	568	
+121	858354787	569	
+122	229643893	564	
+133	112946739	563	
+144	4067536748	561	
+155	9067644748	569	
+166	788016748	565	
+177	866557748	571	
+
+
+
+Table 10:      Dines
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (41,561,01);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (42,562,01);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (43,563,02);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (44,564,07);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (45,565,01);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (46,566,03);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (47,567,05);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (48,568,01);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (49,569,04);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (50,570,01);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (51,571,06);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (52,572,01);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (53,561,08);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (54,562,10);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (55,563,09);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (56,572,10);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (57,572,11);
+INSERT INTO dines(dine_ID,C_ID,R_ID)
+VALUES (58,572,12);
+ 
+
+
+R_ID	C_ID	dine_id	
+12	572	58	
+11	572	57	
+10	572	56	
+9	563	55	
+10	562	54	
+8	561	53	
+1	572	52	
+6	571	51	
+1	570	50	
+4	569	49	
+1	568	48	
+5	567	47	
+3	566	46	
+1	565	45	
+7	564	44	
+2	563	43	
+1	562	42	
+1	561	41	
+
+
+
+Table 11:      foodstyle
+
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (1,21,01);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (2,22,02);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (3,22,03);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (4,30,04);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (5,25,05);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (6,26,06);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (7,27,07);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (8,28,08);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (9,30,09);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (10,30,10);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (11,31,11);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (12,32,12);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (13,32,06);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (14,22,07);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (15,28,08);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (16,27,09);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (17,26,10);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (18,29,11);
+INSERT INTO foodstyle(food_ID,CU_ID,R_ID)
+VALUES (19,31,12);
+ 
+
+
+
+R_ID	CU_ID	food_ID	
+1	21	1	
+2	22	2	
+3	22	3	
+4	30	4	
+5	25	5	
+6	26	6	
+7	27	7	
+8	28	8	
+9	30	9	
+10	30	10	
+11	31	11	
+12	32	12	
+6	32	13	
+7	22	14	
+8	28	15	
+9	27	16	
+10	26	17	
+11	29	18	
+12	31	19	
+
+
+SQL QUERIES
+1)	Find the list of types of cuisines that is offered by various restaurants in the city of “Omaha”?
+
+SELECT DISTINCT cuisines.CU_type,restaurant.R_name,restaurant.R_city
+FROM restaurant INNER JOIN foodstyle ON restaurant.R_ID=foodstyle.R_ID INNER JOIN cuisines ON cuisines.CU_ID=foodstyle.CU_ID
+WHERE restaurant.R_city='omaha';
+
+
+
+CU_type	    R_name	R_city	
+chinese	    skybar	omaha	
+pakistan   maharaja	omaha	
+afgan	    bahar	omaha	
+bhutani	    bahar	omaha	
+japanese   navy pier	omaha	
+indian	  navy pier	omaha	
+nepali	    mefil	omaha	
+japanese   mefil	omaha	
+
+
+ 
+
+2)Find the names of customers who didn’t pay their bill through cash and but has paid through credit card?
+
+SELECT DISTINCT customer.C_name,payment.P_type from customer,payment 
+WHERE customer.P_ID=payment.P_ID 
+AND NOT payment.P_type='cash' 
+AND payment.P_type='credit'
+ ORDER BY customer.C_name;
+ 
+
+
+
+  C_name   	P_type	
+  john	        credit	
+   ram	        credit	
+
+
+3) Find the restaurant ID of the restaurant which has maximum number of chef’s?
+
+CREATE VIEW chef_count AS
+SELECT chef.R_ID, COUNT(chef.chef_ID) AS chefcount
+FROM chef
+GROUP BY chef.R_ID;
+
+SELECT DISTINCT chef_count.R_ID,chef_count.chefcount
+FROM chef_count
+ORDER BY chef_count.chefcount DESC
+LIMIT 1;
+ 
+
+
+R_ID	chefcount   	
+1	3	
+
+
+4) Find the names of all the customers whose name starts with letter “J” and who have made payment using the payment type starting with letter “c”?
+
+
+
+SELECT customer.C_name
+FROM customer
+WHERE customer.C_name LIKE 'j%'
+UNION
+SELECT customer.C_name
+FROM customer INNER JOIN payment
+ON customer.P_ID=payment.P_ID
+WHERE payment.P_type LIKE 'c%'
+
+
+C_name	
+john	
+jack	
+ronnie	
+benji	
+mary	
+ron	
+rajesh	
+ram	
+
+
+
+
+5)List all the chef’s name and their corresponding restaurant names?
+
+    SELECT restaurant.R_ID,restaurant.R_name,chef.chef_ID,chef.chef_name
+    FROM chef CROSS JOIN restaurant;
+ 
+
+
+
+R_ID	R_name	chef_ID	chef_name	
+1	skybar	  91	raj	
+2	paradise  91	raj	
+3	chitpole  91	raj	
+4	fishland  91	raj	
+5	maharaja  91	raj	
+6	bahar	  91	raj	
+7	navy pier 91	raj	
+8	mohini	  91	raj	
+9	mefil	  91	raj	
+10	kamat	  91	raj	
+11	mcd	  91	raj	
+12	kfc	  91	raj	
+1	skybar	  90	happy	
+2	paradise  90	happy	
+3	chitpole  90	happy	
+4	fishland  90	happy	
+5	maharaja  90	happy	
+6	bahar	  90	happy	
+7	navy pier 90	happy	
+8	mohini	 90	happy	
+9	mefil	 90	happy	
+10	kamat	 90	happy	
+11	mcd	 90	happy	
+12	kfc	 90	happy	
+1	skybar	 89	joy	
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-	
+8	mohini	95	juno	
+9	mefil	95	juno	
+10	kamat	95	juno	
+11	mcd	95	juno	
+12	kfc	95	juno	
+
+
+6)	Display the customer name who has maximum number of phone numbers?
+
+CREATE VIEW phonecustomer AS
+SELECT COUNT(phone.phone_ID) AS phonecount,customer.C_ID,customer.C_name
+FROM customer RIGHT JOIN phone
+ON customer.C_ID=phone.C_ID
+GROUP BY customer.C_ID;
+
+SELECT phonecustomer.phonecount,phonecustomer.C_ID,phonecustomer.C_name
+FROM phonecustomer
+GROUP BY phonecustomer.C_ID,phonecustomer.C_name
+ORDER BY phonecustomer.phonecount DESC
+LIMIT 1;
+
+
+
+phonecount   	C_ID	C_name	
+4	561	john	
+
+ 
+
+7) Display the customer names who have ordered a fooditem which serves between 4 to 10 people?
+
+SELECT chef.chef_ID,fooditems.servings,chef.R_ID,dines.C_ID,customer.C_name
+FROM fooditems INNER JOIN chef
+ON chef.chef_ID=fooditems.chef_ID INNER JOIN dines ON dines.R_ID=chef.R_ID INNER JOIN customer ON customer.C_ID=dines.C_ID
+WHERE fooditems.servings BETWEEN 4 AND 10;
+
+
+
+
+chef_ID	servings	R_ID	C_ID	C_name	
+81	4	          1	572	ram	
+81	4	          1	570	rajesh	
+81	4	          1	568	rahul	
+81	4	          1	565	ronnie	
+81	4	          1	562	sean	
+81	4	          1	561	john	
+86	6	          6	571	mary	
+89	8	          9	563	ron	
+
+
+8)	Find the city name where the count of the customers is greater than 1?
+
+SELECT COUNT(customer.C_ID) AS customer_count, customer.C_City
+FROM customer
+GROUP BY customer.C_City
+HAVING COUNT(customer.C_ID)>1
+ORDER BY customer.C_City;
+
+ 
+
+
+customer_count	   C_City   	
+2	           arlington	
+2	           chicago	
+2	           hyderabad	
+2	           maryland	
+3	           pune	
+
+
+9)Find the food name in the food items table where Cuisine ID is greater than the Cuisine ID of type Chinese in cuisines table.
+(set comparison with nested queries)
+
+select f_name from fooditems where cu_id > all(select CU_ID from cuisines where CU_type='Chinese');
+
+
+f_name	
+butterchicken	
+naan	
+garlicbread	
+pizza	
+bakedpotato	
+samosa	
+biryani	
+
+
+
+10) Find the customer id from customer table where payment type is through “credit”
+(set membership with nested queries using IN)
+
+select c_id from customer where p_id in(select p_id from payment where p_type="credit");
+
+
+c_id	
+561	
+572	
+
+ 
+
+
+11) Find chef ID from the chef table where experience of chef is greater than 10 and 20?
+
+SELECT chef_ID
+FROM chef as A
+WHERE A.experience>20 AND EXISTS(SELECT * FROM chef AS B WHERE B.experience>10);
+
+
+
+chef_ID	
+88	
+93	
+
+ 
+
+12) find the cuisines ID’s which no restaurants serve?
+
+SELECT CU_ID from cuisines WHERE NOT EXISTS(select CU_ID from foodstyle where cuisines.CU_ID = foodstyle.CU_ID);
+ 
+
+CU_ID	
+23	
+24	
+
+13) Insert a new tuple in chef table where chef name is “ashu” and whose experience is 27?
+
+ INSERT INTO chef(chef_ID,chef_name,experience)
+VALUES(96,'ashu',27);
+
+ 
+
+chef_ID	chef_name	chef_age	experience	R_ID	
+91	raj	           25	           2	         11	
+90	happy	           66	           20	         10	
+89	joy	           56	           10	          9	
+88	kishen	           60	           25	          8	
+87	raj	           47	          10	          7	
+86	bunny	           25	           2	          6	
+85	sunny	           66	           20	          5	
+84	tom	           30	           4	          4	
+83	hendry	           56	           10	          3	
+82	villy	           45	           5	          2	
+81	stan	           20	            1	          1	
+92	raj	           47	           10	         12	
+93	yash	           60	           25	         11	
+94	ketan	           56	           10	          1	
+95	juno	           56	          10	          1	
+96	ashu		    27		
+
+
+14) Insert a new tuple in payment table where payment type is “paytym”?
+
+INSERT INTO payment
+VALUES(6,'paytym');
+ 
+
+
+P_ID	P_type	
+5	cheque	
+4	paypal	
+3	cash	
+2	debit	
+1	credit	
+6	paytym	
+
+
+15) update the chef name to “nikki” where experience is 27?
+
+UPDATE chef
+set chef_name='nikki'
+WHERE experience=27;
+ 
+
+chef_ID	chef_name	chef_age     experience	R_ID	
+91	raj	           25	           2	11	
+90	happy	           66	          20	10	
+89	joy	           56	          10	9	
+88	kishen	           60	          25	8	
+87	raj	           47	          10	7	
+86	bunny	          25	          2	6	
+85	sunny	          66	          20	5	
+84	tom	          30	          4	4	
+83	hendry	          56	          10	3	
+82	villy	          45	          5	2	
+81	stan	          20	          1	1	
+92	raj	          47	         10	12	
+93	yash	          60	         25	11	
+94	ketan	          56	         10	1	
+95	juno	         56	         10	1	
+96	nikki		 27		
+
+
+16) update the payment ID to 10 where payment ID is 6?
+
+UPDATE payment
+SET payment.P_ID=10
+WHERE payment.P_ID =6;
+ 
+
+P_ID	P_type	
+5	cheque	
+4	paypal	
+3	cash	
+2	debit	
+1	credit	
+10	paytym	
+
+
+17) Delete a tuple from chef table where chef name is “nikki”?
+
+DELETE FROM chef
+WHERE chef.chef_name='nikki';
+ 
+
+chef_ID	chef_name   chef_age	      experience    R_ID	
+91	raj	      25	             2	       11	
+90	happy	      66	             20	       10	
+89	joy	     56	                    10         	9	
+88	kishen       60	                    25	        8	
+87	raj	     47	                    10	        7	
+86	bunny	     25	                     2	        6	
+85	sunny	     66	                     20  	5	
+84	tom	     30	                     4	        4	
+83	hendry	     56	                     10	        3	
+82	villy	     45	                     5	        2	
+81	stan	     20	                     1	        1	
+92	raj	     47	                     10	       12	
+93	yash	     60	                     25	       11	
+94	ketan	     56	                     10	        1	
+95	juno	     56	                     10	        1	
+
+
+18) Delete a tuple from payment table where payment type is “paytym”?
+
+DELETE FROM payment
+WHERE payment.P_type='paytym';
+ 
+
+
+P_ID	P_type	
+5	cheque	
+4	paypal	
+3	cash	
+2	debit	
+1	credit	
+
+
+19)Find the cuisine ID’s along with the average price of cuisines which is equal to and greater than 30?
+
+CREATE VIEW chef_price AS
+SELECT fooditems.CU_ID,AVG(fooditems.price) AS avg_price FROM fooditems
+      GROUP BY fooditems.CU_ID;
+
+SELECT chef_price.CU_ID,chef_price.avg_price
+FROM chef_price
+WHERE chef_price.avg_price>=30;
+ 
+
+CU_ID	avg_price	
+21	50.0000	
+22	30.0000	
+24	50.0000	
+25	50.0000	
+26	50.0000	
+
+
+20) Find the average hourly salary and average monthly salary of all the chef’s?
+
+SELECT AVG(part_time_chef.hourly_salary)AS part_salary,AVG(full_time_chef.monthly_salary)AS month_salary
+FROM part_time_chef INNER JOIN full_time_chef;
+ 
+
+
+
+
+part_salary     month_salary
+17238.5556	8171.8333	
+	
+
+
+
+
+21) find the chef name who has cooked Indian cuisines where the food name is butter chicken?
+
+SELECT chef.chef_name,fooditems.f_name,cuisines.CU_type
+FROM fooditems INNER JOIN chef ON chef.chef_ID=fooditems.chef_ID INNER JOIN cuisines ON cuisines.CU_ID=fooditems.CU_ID
+WHERE fooditems.f_name='butterchicken' 
+AND 
+cuisines.CU_type='indian';
+
+
+
+chef_name     f_name            CU_type
+stan	     butterchicken	indian	
+
+ 
+
+22) Find the number of restaurants which are visited by each customer?
+
+SELECT COUNT(restaurant.R_name),customer.C_name
+FROM restaurant INNer JOIN dines
+ON restaurant.R_ID=dines.R_ID
+INNER JOIN customer 
+ON customer.C_ID=dines.C_ID
+GROUP BY customer.C_name
+ORDER BY COUNT(restaurant.R_name) ASC;
+
+
+COUNT(restaurant.R_name)	C_name	
+1	                        jack	
+1	                        rajesh	
+1	                        mary	
+1	                        benji	
+1	                        rahul	
+2	                        sean	
+2	                        ron	
+2	                        ronnie	
+3	                        john	
+4	                         ram	
+
+
+
+ 
+
+23) find the restaurant name whose city starts from letter O and who has a rating less than 5?
+
+SELECT restaurant.R_name,restaurant.R_city
+FROM restaurant 
+WHERE restaurant.R_city LIKE 'o%'
+AND 
+restaurant.R_rating<5;
+ 
+
+
+R_name	R_city	
+skybar	omaha	
+maharaja	omaha	
+bahar	omaha	
+
+24) Find the cuisine type which uses ingredient fish?
+ 
+SELECT cuisines.CU_type,cuisines.ingrediant
+FROM cuisines
+WHERE cuisines.ingrediant='fish';
+ 
+
+
+CU_type	    ingrediant	
+chinese	        fish	
+japanese	fish	
+korean	        fish	
+
+
+
+INTRODUCTION
+
+
+
+A restaurant is a business, which cook and serve food and beverages to its customers in exchange of money. The food is generally served and eaten within the premises of the restaurant. But nowadays, many restaurants offer many services like take-out, home delivery services to its customers. There are few restaurants which only offer the take- out option. Restaurants vary greatly in appearance and offerings, including a wide variety of cuisines and service models ranging from inexpensive fast food restaurants and cafeterias to mid-priced family restaurants, to high-priced luxury establishments. Many restaurants serve alcoholic beverages like beer, wine etc. Many restaurants serve major meals such as breakfast, lunch, dinner. There are some restaurants which only serve breakfast.
+Some restaurants are a chain, meaning that there are many restaurants spread all over the world that have the same name and serve the same food. McDonald's, Starbucks, KFC and Pizza Hut are examples of chain restaurants that are all over the world. These restaurants serve fast food, which is, inexpensive food, prepared and served quickly. At some of these restaurants, you do not have to even get out of the car to eat. You can pay and get your order from a window. These places are called drive-through. Drive through are very popular in Western Countries like United states and Canada.
+
+
+OBJECTIVE
+The objective of this project is to create a restaurant database consisting information regarding restaurants. Database includes information about customers, waiters, hosts, chef’s, managers. It also includes data about payment methods, food items, cuisines offered, various menus. We use this database to not only store the data but also to retrieve useful information from the database by writing queries.
+
+
+APPLICATION DETAILS
+
+
+The data which stored in the restaurant database is very huge. It contains various entities, attributes and relationships. From this huge amount of data, we sometimes require to retrieve important and useful data. The information is generally acquired by writing an executing the queries. For example, I want to find the address of the customer whose name is “john” and who goes to restaurant by name “chipotle”. The information which is retrieved after executing the query is useful for the restaurant staff to send the discount coupons, to the customer’s home address. By doing this the restaurant increases its publicity and also it receives customers who visit the restaurant for the meal due to discounted coupons. Thus, by doing this, the restaurant increases its profits. By writing queries we can automatically get the information quickly rather than manually retrieving the information from the databases which is a huge tiresome task and time taking process at the same time.
+
+ER DIAGARAM
+Entities and Attributes
+Customers: C_ID, mood, C_Type, P_ID, C_name,C_city
+ Phone: Phone_ID, Phone_Number, C_ID
+Restaurants: R_ID, R_Type, R_Name, R-city, R_Rating, Feedback, theme
+Chef: Chef_ID, R_ID, Chef_Name, Chef_Age, experience
+Part_Time_Chef: Hourly_Salary, Chef_ID, chef_name
+Full_Time_Chef: Monthly_Salary, Chef_ID, chef_name
+Food Item: CU_ID, F_Name, Calories, Quantity, Servings, Price, Chef_ID 
+Payment: P_ID, P_type
+Cuisines: CU_ID, CU_Type, Ingredient, Country
+Dines: dine_id, R_ID,C_ID
+Foodstyle: food_ID,CU_ID,R_ID
+
+
+
+Primary keys and Foreign keys:
+Customers: C_ID (Primary), P_ID (Foreign Keys)
+Restaurants: R_ID(Primary), CU_ID (Foreign key)
+Chef’s: Chef_ID (Primary Keys), R_ID (Foreign keys) 
+Food Item: F_Name, CU_ID: CU_ID, F_Name, Calories, Quantity, Servings, F_Type, Price, 
+Chef_ID (Foreign key)
+Payment:  P_ID (Primary Key)
+Cuisines: CU_ID (Primary Key)
+Full_Time_Chef: Chef_ID(Primary key), Monthly_Salary
+Part_Time_Chef: Chef_ID(primary key), Hourly_Salary
+Phone: Phone_ID(Primary key), Phone_Number, C_ID(Foreign key)
+Dines: dine_id(primary key), R_ID (foreign key), C_ID (foreign key)
+Foodstyles: food_ID(primary key), CU_ID (foreign key), R_ID (foreign key)
+
+Primary keys and Foreign keys:
+Customers: C_ID (Primary), P_ID (Foreign Keys)
+Restaurants: R_ID(Primary), CU_ID (Foreign key)
+Chef’s: Chef_ID (Primary Keys), R_ID (Foreign keys) 
+Food Item: F_Name, CU_ID: CU_ID, F_Name, Calories, Quantity, Servings, F_Type, Price, 
+Chef_ID (Foreign key)
+Payment:  P_ID (Primary Key)
+Cuisines: CU_ID (Primary Key)
+Full_Time_Chef: Chef_ID(Primary key), Monthly_Salary
+Part_Time_Chef: Chef_ID(primary key), Hourly_Salary
+Phone: Phone_ID(Primary key), Phone_Number, C_ID(Foreign key)
+Dines: dine_id(primary key), R_ID (foreign key), C_ID (foreign key)
+Foodstyles: food_ID(primary key), CU_ID (foreign key), R_ID (foreign key)
+
+Relational Schema
+
+Customer (C_ID, mood, C_Type, P_ID, C_name,C_city)
+ Phone (Phone_ID, Phone_Number, C_ID)
+Restaurants (R_ID, R_Type, R_Name, R-city, R_Rating, Feedback, theme)
+Chef (Chef_ID, R_ID, Chef_Name, Chef_Age, experience)
+Part_Time_Chef (Hourly_Salary, Chef_ID, chef_name)
+Full_Time_Chef (Monthly_Salary, Chef_ID, chef_name)
+Food Item (CU_ID, F_Name, Calories, Quantity, Servings, Price, Chef_ID )
+Payment (P_ID, P_type)
+Cuisines (CU_ID, CU_Type, Ingredient, Country)
+Dines (dine_id, R_ID,C_ID)
+Foodstyle  (food_ID,CU_ID,R_ID)
+
+
